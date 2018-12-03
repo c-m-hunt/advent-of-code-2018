@@ -8,3 +8,18 @@ let result = data.reduce((x, y) => {
 }, startValue)
 
 console.log(result)
+
+startValue = 0
+var prevVals = [startValue]
+let found = false
+while (!found) {
+  startValue = data.reduce((x, y) => {
+    let newValue = x + parseInt(y, 10)
+    if (prevVals.indexOf(newValue) > -1 && !found) {
+      found = true;
+      console.log('DUPE VALUE ', newValue)
+    }
+    prevVals.push(newValue)
+    return newValue
+  }, startValue)
+}
