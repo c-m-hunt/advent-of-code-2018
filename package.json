@@ -1,0 +1,11 @@
+{
+  "name": "advent2018",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:c-m-hunt/advent2018.git",
+  "author": "Chris Hunt <chris.hunt@hudl.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
