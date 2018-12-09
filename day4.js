@@ -4,9 +4,6 @@ let timetable = getAndParseTimes()
 timetable = parseActions(timetable)
 processActions(timetable)
 
-
-// console.log(timetable)
-
 function findMax(sleepTotal) {
   let max = {guard: null, time: 0}
   Object.keys(sleepTotal).map(guard => {
@@ -16,7 +13,6 @@ function findMax(sleepTotal) {
   })
   return max
 }
-
 
 function processActions(timetable) {
   let guards = timetable.map(action => {
