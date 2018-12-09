@@ -10,7 +10,6 @@ processActions(timetable)
 function findMax(sleepTotal) {
   let max = {guard: null, time: 0}
   Object.keys(sleepTotal).map(guard => {
-    console.log(sleepTotal[guard])
     if (sleepTotal[guard] > max.time) {
       max = {guard, time: sleepTotal[guard]}
     }
@@ -23,9 +22,9 @@ function processActions(timetable) {
   let guards = timetable.map(action => {
     return action.guard
   })
-  guards = new Set(guards)
+  guards = Array.from(new Set(guards))
   let sleepTotal = {}
-  Array.from(guards).map(guard => {
+  guards.map(guard => {
     sleepTotal[guard] = 0
   })
   
@@ -36,31 +35,50 @@ function processActions(timetable) {
   })
 
   let max = findMax(sleepTotal)
-  
+  let guardSleep = getGuardMinutes(timetable, guards)
+  let maxMins = getGuardMax(guardSleep, max.guard)
 
-  let filteredTimetable = timetable.filter(row => {
-    return row.guard === max.guard && row.timeAsleep
-  })
-
-  let sleepMins = _.fill(Array(60), 0)
-  filteredTimetable.map(row => {
-    for (let i = 1; i <= row.timeAsleep; i++) {
-      sleepMins[row.minute - i] ++
-    }
-  })
-
-  let maxMins = { min: null, occur: 0}
-  sleepMins.map((occur, i) => {
-    if (occur > maxMins.occur) {
-      maxMins = { min: i, occur}
-    }
-  })
   console.log('Part 1')
   console.log('-------------')
   console.log('Max guard: ', max)
   console.log('Max min: ', maxMins)
   console.log('Checksum: ', max.guard * maxMins.min)
 
+  let maxGuardMin = {guard: null, min: null, occur: 0}
+  guards.map(guard => {
+    let guardMax = getGuardMax(guardSleep, guard)
+    if (guardMax.occur > maxGuardMin.occur) {
+      maxGuardMin = { ...guardMax, guard}
+    }
+  })
+
+  console.log('Part 2')
+  console.log('-------------')
+  console.log('Max guard: ', maxGuardMin)
+  console.log('Checksum: ', parseInt(maxGuardMin.guard) * maxGuardMin.min)
+}
+
+function getGuardMax(guardSleep, guard) {
+  let maxMins = { min: null, occur: 0}
+  guardSleep[guard].map((occur, i) => {
+    if (occur > maxMins.occur) {
+      maxMins = { min: i, occur}
+    }
+  })
+  return maxMins
+}
+
+function getGuardMinutes(timetable, guards) {
+  let sleepMins = {}
+  guards.map(guard => {
+    sleepMins[guard] = _.fill(Array(60), 0)
+  })
+  timetable.map(row => {
+    for (let i = 1; i <= row.timeAsleep; i++) {
+      sleepMins[row.guard][row.minute - i] ++
+    }
+  })
+  return sleepMins
 }
 
 function parseActions(timetable) {
