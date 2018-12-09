@@ -1,5 +1,6 @@
 let fs = require('fs')
-let data = fs.readFileSync('./data/day6.txt', {encoding: 'utf-8'})
+let _ = require('lodash')
+let data = fs.readFileSync('./data/day6_test.txt', {encoding: 'utf-8'})
 
 data = data.split('\n')
 data = data.map(row => {
@@ -35,6 +36,13 @@ data.map((coord, i) => {
 console.log('Part 1')
 console.log(Math.max.apply(null, Object.values(areas)))
 
+console.log('Part 2')
+console.log(getSumDistFromPoint(4, 2, data))
+// let distances = getTotalDistances(data).filter(dist => {
+//   return dist.dist <= 32
+// })
+// console.log(distances)
+
 function getArea(coords, data, i) {
   let area = 0
   let infinite = false;
@@ -64,3 +72,23 @@ function getDist(pos1, pos2) {
   return Math.abs(pos1[0]-pos2[0]) + Math.abs(pos1[1]-pos2[1]);
 }
 
+function getTotalDistances(data) {
+  //let areas = _.fill(Array(maxX), _.fill(Array(maxY), 0))
+  let dists = []
+  for (let x = 0; x < maxX; x ++) {
+    for (let y = 0; y < maxY; y ++) {
+      dists.push({ x, y, dist: getSumDistFromPoint(x, y, data) })
+    }
+  }
+  return dists
+}
+
+function getSumDistFromPoint(x, y, data) {
+  let dist = 0
+  data.map(coord => {
+    let newDist = getDist([x,y], coord)
+    dist += newDist
+    console.log(x, y, coord, newDist)
+  })
+  return dist
+}
