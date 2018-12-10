@@ -42,6 +42,7 @@ console.log(getSumDistFromPoint(4, 2, data))
 //   return dist.dist <= 32
 // })
 // console.log(distances)
+// Answer 44202
 
 function getArea(coords, data, i) {
   let area = 0
