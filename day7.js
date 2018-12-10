@@ -20,9 +20,7 @@ function process(data) {
 function getNext(deps, route) {
   let keys = Object.keys(deps);
   for (let i = 0; i < keys.length; i ++ ) {
-    deps[keys[i]] = deps[keys[i]].filter(letter => {
-      return route.indexOf(letter) === -1
-    })
+    deps[keys[i]] = deps[keys[i]].filter(letter => route.indexOf(letter) === -1)
   }
   let candidates = Object.keys(deps).filter(letter => deps[letter].length === 0 && route.indexOf(letter) === -1)
   candidates.sort()
